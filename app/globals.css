@@ -1,0 +1,262 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* === Шрифты === */
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    /* === Easing-токены (по стандарту emil-design-eng) === */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+
+    /* === Duration-токены === */
+    --duration-fast: 140ms;
+    --duration-base: 220ms;
+    --duration-slow: 360ms;
+    --duration-reveal: 600ms;
+
+    /* === Цвета для box-shadow (теплые, не холодные) === */
+    --shadow-clay: 0 8px 24px -8px rgba(193, 95, 60, 0.32);
+    --shadow-clay-hover: 0 14px 32px -10px rgba(193, 95, 60, 0.42);
+    --shadow-card: 0 1px 2px rgba(20, 20, 19, 0.04), 0 8px 24px -12px rgba(20, 20, 19, 0.08);
+    --shadow-card-hover: 0 2px 4px rgba(20, 20, 19, 0.05), 0 16px 40px -12px rgba(193, 95, 60, 0.18);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    /* Тёплый cream-фон, чтобы быть готовым до загрузки шрифтов/стилей */
+    background-color: #f4f3ee;
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-cream text-ink antialiased;
+    /* Мягкие тёплые свечения поверх cream-фона */
+    background-image:
+      radial-gradient(55% 45% at 50% 0%, rgba(193, 95, 60, 0.08), transparent 70%),
+      radial-gradient(40% 35% at 100% 100%, rgba(177, 173, 161, 0.18), transparent 70%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-clay/25 text-ink;
+  }
+
+  /* Скроллбар в тёплых тонах */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #EDEAE0;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-cloudy;
+    transition: background var(--duration-base) var(--ease-out);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-clay;
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section {
+    @apply py-20 sm:py-28;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold tracking-tight text-ink sm:text-4xl;
+    letter-spacing: -0.02em;
+  }
+
+  .section-eyebrow {
+    @apply mb-3 inline-block font-mono text-sm text-clay;
+  }
+
+  /* Карточка: белая на cream-фоне, тёплая тень, тонкая рамка */
+  .card {
+    @apply relative rounded-2xl border border-cloudy/40 bg-cream-card p-6;
+    box-shadow: var(--shadow-card);
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+    will-change: transform;
+  }
+
+  /* Акцентная кнопка: терракота + белый текст */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-clay px-6 py-3 text-sm font-semibold text-white;
+    box-shadow: var(--shadow-clay);
+    transition:
+      transform var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out);
+    will-change: transform;
+  }
+  .btn-primary:hover {
+    @apply bg-clay-500;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-clay-hover);
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  /* Ghost-кнопка: прозрачная с тонкой тёплой рамкой */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-transparent px-6 py-3 text-sm font-semibold text-ink;
+    transition:
+      transform var(--duration-fast) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out);
+    will-change: transform;
+  }
+  .btn-ghost:hover {
+    @apply border-ink/30 bg-ink/[0.03];
+    transform: translateY(-2px);
+  }
+  .btn-ghost:active {
+    transform: scale(0.97);
+  }
+
+  /* Градиентный текст: только в терракотовых тонах */
+  .text-gradient {
+    @apply bg-gradient-to-r from-clay-500 via-clay-400 to-clay-300 bg-clip-text text-transparent;
+  }
+
+  /* Hover-эффект только для настоящих курсоров */
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      @apply border-clay/30;
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card-hover);
+    }
+  }
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* === Глобальный focus-visible ===
+   Унифицирует фокус-стиль для клавиатурных пользователей.
+   Без этого btn-primary/btn-ghost и многие ссылки не имели видимого фокуса. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid #a84a2b; /* clay (AA-контраст) */
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Убираем default outline только когда фокус не от клавиатуры (mouse click) */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* === Print styles ===
+   Рекрутёры могут распечатать сайт как резюме. Без этого блока печать
+   выжигает тёмные градиенты/свечения в PDF — получается нечитаемо. */
+@media print {
+  /* Скрываем все декоративные фоновые слои, навигацию, курсор-эффекты */
+  [aria-hidden="true"],
+  header,           /* navbar */
+  footer,           /* footer с social */
+  .animate-float,
+  .animate-marquee,
+  .animate-pulse-soft,
+  .animate-gradient-shift,
+  .animate-aurora-drift,
+  canvas,           /* 3D Canvas */
+  video {
+    display: none !important;
+  }
+
+  /* Белый фон, чёрный текст */
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    background-image: none !important;
+  }
+
+  /* Меняем фирменные цвета на читаемые в печати */
+  .text-gradient {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    background: none !important;
+  }
+  .section-eyebrow,
+  a {
+    color: #5a2d1a !important; /* тёмная терракота для печати */
+  }
+
+  /* Карточки без теней/рамок, но с тонким разделителем */
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    background: #fff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Секции — компактнее, без больших отступов */
+  .section {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Убираем transform-анимации (TiltCard, Magnetic и т.д.) */
+  * {
+    transform: none !important;
+  }
+
+  /* Ссылки показываем с URL после текста */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+  /* mailto/tel без префикса */
+  a[href^="mailto:"]::after,
+  a[href^="tel:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+  /* Внутренние якоря не разворачиваем */
+  a[href^="#"]::after,
+  a[href^="/"]::after {
+    content: "";
+  }
+
+  /* Размер страницы — A4 с нормальными полями */
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+}

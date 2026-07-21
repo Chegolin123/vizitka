@@ -1,0 +1,285 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { projects, projectsFilters, type Project } from "@/lib/content";
+import Reveal from "@/components/ui/Reveal";
+import TiltCard from "@/components/ui/TiltCard";
+import { cn } from "@/lib/utils";
+
+/**
+ * Секция портфолио.
+ *
+ * Анимация фильтрации — намеренно простая и стабильная:
+ * - одна обёртка с key=filter пересоздаётся при смене фильтра
+ * - children оживают через delay-стаггер (60ms на карточку)
+ * - НЕТ motion layout / popLayout — именно их комбинация с AnimatePresence
+ *   давала рывки и скачки (особенно на featured-карточке 2-col-span)
+ * - при смене фильтра вся сетка плавно fade-ит (opacity 0→1) — без
+ *   попыток анимировать позиции карточек, которые прыгают
+ *
+ * featured-проект оставлен крупнее (col-span-2), но это не вызывает
+ * рывков, потому что мы больше не пытаемся плавно «переезжать» карточки.
+ */
+export default function Projects() {
+  const [filter, setFilter] = useState<string>("Все");
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const reduce = Boolean(useReducedMotion());
+
+  const filtered = useMemo(
+    () =>
+      filter === "Все"
+        ? projects
+        : projects.filter((p) => p.category === filter),
+    [filter]
+  );
+
+  return (
+    <section id="projects" className="section">
+      <div className="container-px">
+        <Reveal>
+          <span className="section-eyebrow">/ портфолио</span>
+          <h2 className="section-title">Избранные работы</h2>
+          <p className="mt-4 max-w-2xl text-ink-soft">
+            Несколько проектов, которыми горжусь. У каждого — коротко задача и
+            решение: видно не только «что», но и «как».
+          </p>
+        </Reveal>
+
+        {/* Фильтры */}
+        <Reveal delay={100}>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {projectsFilters.map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFilter(f)}
+                aria-pressed={filter === f}
+                className={cn(
+                  "rounded-full border px-4 py-1.5 text-xs font-medium transition-all duration-base ease-out-expo active:scale-95",
+                  filter === f
+                    ? "border-clay bg-clay text-white"
+                    : "border-cloudy/50 bg-cream-soft/40 text-ink-soft hover:border-clay/50 hover:text-clay"
+                )}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Сетка.
+            key={filter} заставляет React пересоздать DOM при смене фильтра,
+            что даёт чистую fade-анимацию без layout-конфликтов. */}
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={filter}
+              className="contents"
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {filtered.map((project, i) => (
+                <ProjectCard
+                  key={project.title}
+                  project={project}
+                  expanded={expanded === project.title}
+                  onToggle={() =>
+                    setExpanded((cur) =>
+                      cur === project.title ? null : project.title
+                    )
+                  }
+                  index={i}
+                  reduce={reduce}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Подпись про демо-данные */}
+        <Reveal>
+          <p className="mt-10 text-center text-xs text-ink-muted">
+            ✦ Здесь демонстрационные кейсы. Реальные проекты появятся после
+            деплоя.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* === Карточка проекта ===
+   Без layout-анимации. Только простое появление через delay. */
+
+function ProjectCard({
+  project,
+  expanded,
+  onToggle,
+  index,
+  reduce,
+}: {
+  project: Project;
+  expanded: boolean;
+  onToggle: () => void;
+  index: number;
+  reduce: boolean;
+}) {
+  const isFeatured = project.featured;
+
+  return (
+    <TiltCard className={cn(isFeatured && "sm:col-span-2 lg:col-span-2")}>
+      <motion.article
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          ease: [0.22, 1, 0.36, 1],
+          delay: reduce ? 0 : 0.05 + index * 0.06,
+        }}
+        className={cn(
+          "group relative overflow-hidden rounded-2xl border border-cloudy/40 bg-cream-card shadow-[var(--shadow-card)] transition-shadow duration-base ease-out-expo hover:shadow-[var(--shadow-card-hover)]",
+          isFeatured && "sm:col-span-2 lg:col-span-2"
+        )}
+      >
+      {/* Изображение-обложка */}
+      <div
+        className={cn(
+          "relative overflow-hidden",
+          isFeatured ? "aspect-[16/9]" : "aspect-[16/10]"
+        )}
+      >
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          sizes={
+            isFeatured
+              ? "(max-width: 768px) 100vw, 66vw"
+              : "(max-width: 768px) 100vw, 33vw"
+          }
+          className="object-cover transition-transform duration-slow ease-out-expo group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+        <span className="absolute left-3 top-3 rounded-full bg-cream-card/90 px-2.5 py-1 font-mono text-xs font-medium text-clay backdrop-blur-sm">
+          {project.category}
+        </span>
+        <span className="absolute right-3 top-3 rounded-full bg-ink/60 px-2 py-0.5 font-mono text-xs text-cream backdrop-blur-sm">
+          {project.year}
+        </span>
+      </div>
+
+      {/* Контент */}
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-lg font-semibold text-ink">{project.title}</h3>
+          {project.links && (project.links.live || project.links.repo) && (
+            <div className="flex shrink-0 gap-2">
+              {project.links.repo && (
+                <a
+                  href={project.links.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Исходный код"
+                  className="text-ink-muted transition-colors duration-base ease-out-expo hover:text-clay"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 5 18 5.3 18 5.3c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z" />
+                  </svg>
+                </a>
+              )}
+              {project.links.live && (
+                <a
+                  href={project.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Живая демка"
+                  className="text-ink-muted transition-colors duration-base ease-out-expo hover:text-clay"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M7 17L17 7M17 7H8M17 7v9" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        <p className="mt-2 text-sm text-ink-soft">{project.description}</p>
+
+        {/* Стек */}
+        <ul className="mt-4 flex flex-wrap gap-1.5">
+          {project.stack.map((tech) => (
+            <li
+              key={tech}
+              className="rounded border border-cloudy/40 bg-cream-soft/40 px-2 py-0.5 font-mono text-[10px] text-ink-muted"
+            >
+              {tech}
+            </li>
+          ))}
+        </ul>
+
+        {/* Expandable: задача → решение */}
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={expanded}
+          className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-clay transition-colors hover:text-clay-500"
+        >
+          {expanded ? "Свернуть" : "Задача и решение"}
+          <span
+            className={cn(
+              "transition-transform duration-base ease-out-expo",
+              expanded && "rotate-180"
+            )}
+          >
+            ▾
+          </span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="mt-3 space-y-3 border-t border-cloudy/30 pt-3 text-xs">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+                    Задача
+                  </p>
+                  <p className="mt-1 text-ink-soft">{project.challenge}</p>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+                    Решение
+                  </p>
+                  <p className="mt-1 text-ink-soft">{project.solution}</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      </motion.article>
+    </TiltCard>
+  );
+}

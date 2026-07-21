@@ -1,0 +1,48 @@
+{
+  "intent": "",
+  "state": "active",
+  "files": {
+    "modified": {
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\tailwind.config.ts": "      colors: {\n        // === Anthropic-палитра ===\n        // Источник: Mobbin",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\lib\\theme.ts": "  // === Crail — фирменная терракота Claude ===\n  // DEFAULT/400 = #A84A2B (WCAG",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\globals.css": "  .section {\n    @apply py-20 sm:py-28;\n  }",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\icon.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\">\n  <rect width=\"32\" ",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\manifest.ts": "    theme_color: \"#A84A2B\", // clay (AA-контраст)",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\opengraph-image.tsx": "            color: \"#A84A2B\",\n            display: \"flex\",\n          }}\n        ",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\ContactForm.tsx": "function Field({\n  label,\n  id,\n  value,\n  onChange,\n  error,\n  placeholder,\n  t",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\ui\\Carousel.tsx": "        <div className=\"relative h-1/2 w-full overflow-hidden bg-cream-soft\">\n  ",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\ui\\CarouselControls.tsx": "      {/* Точки-индикаторы.\n          role=\"group\" вместо tablist/tab — табы тре",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\skills\\ReactDemo.tsx": "      {/* === Живой результат === */}\n      <div className=\"flex flex-col items-",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\skills\\TypeScriptDemo.tsx": "  return (\n    <div className=\"relative z-[70] isolate text-xs\">",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\skills\\BackendDemo.tsx": "      <div className=\"relative rounded-lg border border-cloudy/40 bg-cream-soft ",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\skills\\DevOpsDemo.tsx": "  return (\n    <div className=\"relative z-[70] isolate text-xs\">",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\WhyMe.tsx": "        <Reveal delay={200}>\n          <div className=\"mt-16 overflow-hidden rou",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\three\\LazyCanvas.tsx": "function prefersReducedMotion(): boolean {\n  return window.matchMedia(\"(prefers-",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\three\\ThreeInitial.tsx": "      gl={{\n        antialias: true,\n        alpha: true, // прозрачный фон — co",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\lib\\content.ts": "    image:\n      \"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\layout.tsx": "        <PersonJsonLd />\n        {children}\n        {/* Vercel Analytics — беспл",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\Skills.tsx": "import { skills, images, type SkillGroup } from \"@/lib/content\";",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\Projects.tsx": "            ✦ Все проекты — из открытого кода на{\" \"}\n            <a\n           "
+    },
+    "created": [
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\scripts\\update-github-descriptions.sh"
+    ],
+    "read": {
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\lib\\theme.ts": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\tailwind.config.ts": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\ContactForm.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\ui\\Carousel.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\ui\\CarouselControls.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\WhyMe.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\three\\LazyCanvas.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\three\\ThreeInitial.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\lib\\content.ts": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\Footer.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\app\\layout.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\components\\sections\\Skills.tsx": "",
+      "C:\\Users\\Aleks\\Desktop\\zcode\\vizitka\\.gitignore": ""
+    }
+  },
+  "decisions": [],
+  "nextSteps": []
+}
