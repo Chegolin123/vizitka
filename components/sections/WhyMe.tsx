@@ -126,8 +126,8 @@ export default function WhyMe() {
         {/* Заполняет визуальную пустоту перед секцией Contact.
             Подводит клиента к действию без давления. */}
         <Reveal delay={200}>
-          <div className="mt-16 overflow-hidden rounded-3xl border border-clay/30 bg-gradient-to-br from-clay/5 to-transparent p-8 text-center sm:p-12">
-            <p className="text-balance text-xl font-semibold text-ink sm:text-2xl">
+          <div className="mt-16 overflow-hidden rounded-3xl border border-clay/30 bg-gradient-to-br from-clay/15 via-clay/5 to-transparent p-8 text-center shadow-[0_24px_60px_-30px_rgba(168,74,43,0.4)] sm:p-12">
+            <p className="text-balance text-2xl font-semibold text-ink sm:text-3xl">
               Звучит как то, что вам нужно?
             </p>
             <p className="mx-auto mt-3 max-w-md text-ink-soft">

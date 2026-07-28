@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { Story } from "@/lib/content";
 import CarouselControls from "./CarouselControls";
+import ImageFocusEditor from "./ImageFocusEditor";
 
 /**
  * Infinite Carousel с собственным pointer-drag (не motion's drag).
@@ -350,12 +351,17 @@ export default function Carousel({
         aria-label="Избранные работы"
         tabIndex={0}
         onKeyDown={onKeyDown}
-        // Собственный pointer-drag
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        style={{ cursor: reduce ? "default" : "grab", touchAction: "pan-y" }}
+        style={{
+          cursor: reduce ? "default" : "grab",
+          touchAction: "pan-y",
+          // Edge fade mask — карточки растворяются по краям вместо жёсткой обрезки
+          maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+        }}
       >
         <motion.div
           className="flex items-center select-none"
@@ -441,6 +447,13 @@ function CarouselCard({
   const cardLeftInViewport = viewportW / 2 - CARD_W / 2 + realIndex * STEP;
   const cardCenterInViewport = cardLeftInViewport + CARD_W / 2;
 
+  // Dev: focal point для object-position. В production — undefined → object-center.
+  // Начальное значение берётся из story.imageFocus (content.ts), может быть
+  // перекрыто localStorage через ImageFocusEditor в реальном времени.
+  const [focus, setFocus] = useState<string | undefined>(story.imageFocus);
+  // Dev: zoom изображения (колесо мыши над карточкой). Применяется к scale motion.div.
+  const [zoom, setZoom] = useState<number>(story.imageZoom ?? 1.0);
+
   const distanceToCenter = useTransform(x, (latestX) => {
     return Math.abs(viewportW / 2 - (cardCenterInViewport + latestX));
   });
@@ -455,9 +468,6 @@ function CarouselCard({
     [0, CARD_W * 1.2],
     [1, reduce ? 1 : OPACITY_MIN]
   );
-
-  // Parallax картинки
-  const imgX = useTransform(x, (latestX) => (reduce ? 0 : latestX * -0.15));
 
   return (
     <motion.div
@@ -494,9 +504,11 @@ function CarouselCard({
         )}
       >
         <div className="relative h-1/2 w-full overflow-hidden bg-cream-soft">
+          {/* scale без parallax-x. zoom настраивается колесом мыши через
+              ImageFocusEditor (dev-only). В production zoom=1.0. */}
           <motion.div
             className="absolute inset-0"
-            style={{ x: imgX, scale: 1.15 }}
+            style={{ scale: 1.02 * zoom, transformOrigin: "center center" }}
           >
             <Image
               src={story.image}
@@ -504,13 +516,26 @@ function CarouselCard({
               fill
               sizes="(max-width: 768px) 85vw, 320px"
               className="object-cover"
+              style={
+                focus ? { objectPosition: focus } : undefined
+              }
               draggable={false}
               // priority для первых карточек + соседей — мгновенная загрузка
               // того что видно в initial viewport. Остальные — lazy.
               priority={Math.abs(realIndex - CLONES) <= 1}
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/40 to-transparent" />
+
+          {/* Dev-only: draggable focal-point маркер + zoom (колесо мыши).
+              В production возвращает null (gate внутри компонента). */}
+          <ImageFocusEditor
+            storyId={story.id}
+            initialFocus={story.imageFocus}
+            initialZoom={story.imageZoom ?? 1.0}
+            onChange={setFocus}
+            onZoomChange={setZoom}
+          />
 
           <span className="absolute left-3 top-3 rounded-full bg-cream-card/95 px-2.5 py-1 font-mono text-xs font-medium text-clay backdrop-blur-sm">
             {story.shortLabel}
@@ -538,15 +563,24 @@ function CarouselCard({
               </svg>
             </a>
           </div>
-          <h3 className="absolute bottom-3 left-4 right-4 text-xl font-bold text-white">
+          <h3 className="absolute bottom-3 left-4 right-4 text-2xl font-bold text-white">
             {story.projectTitle}
           </h3>
         </div>
 
         <div className="flex h-1/2 flex-col justify-between overflow-hidden p-5">
-          <blockquote className="line-clamp-4 text-sm leading-relaxed text-ink-soft">
-            «{story.quote}»
-          </blockquote>
+          {/* Decorative clay quote mark */}
+          <div className="relative">
+            <span
+              aria-hidden
+              className="absolute -left-1 -top-4 font-serif text-5xl leading-none text-clay/20"
+            >
+              &ldquo;
+            </span>
+            <blockquote className="line-clamp-3 pl-4 text-[15px] leading-relaxed text-ink-soft">
+              {story.quote}
+            </blockquote>
+          </div>
           <figcaption className="mt-4 flex items-center gap-3">
             <span
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-clay/10 font-mono text-xs font-bold text-clay"

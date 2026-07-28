@@ -55,7 +55,7 @@ export default function DevOpsDemo() {
   const allDone = currentStage >= STAGES.length;
 
   return (
-    <div className="relative z-[70] isolate text-xs">
+    <div className="relative z-[70] isolate w-full text-xs">
       {/* Header: workflow name */}
       <div className="mb-2 flex items-center justify-between rounded-t-lg border border-cloudy/40 bg-ink px-3 py-1.5">
         <div className="flex items-center gap-1.5">

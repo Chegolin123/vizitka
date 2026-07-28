@@ -7,26 +7,23 @@ import ContactInfoCard from "./ContactInfoCard";
 export default function Contact() {
   return (
     <section id="contact" className="section relative overflow-hidden">
-      {/* Фоновое фото с тёплым overlay (остаётся для атмосферы) */}
+      {/* Clay radial glow вместо невидимого фото — чище и on-brand */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-25"
-      >
-        <Image
-          src={images.contactBg.src}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-cream via-cream/80 to-cream" />
-      </div>
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 0%, rgba(168,74,43,0.12), transparent 70%)",
+        }}
+      />
 
       <div className="container-px">
-        {/* Шапка секции */}
+        {/* Шапка секции — самый эмоциональный заголовок на сайте */}
         <Reveal>
           <span className="section-eyebrow">/ контакты</span>
-          <h2 className="section-title">
+          <h2 className="text-balance text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl"
+            style={{ letterSpacing: "-0.03em" }}
+          >
             Давай <span className="text-gradient">сделаем</span> что-нибудь крутое
           </h2>
           <p className="mt-4 max-w-2xl text-pretty text-lg text-ink-soft">
@@ -36,9 +33,14 @@ export default function Contact() {
 
         {/* Двухколоночный layout: слева форма, справа инфо-карточка */}
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:gap-8">
-          {/* Левая колонка — форма */}
+          {/* Левая колонка — форма с clay top-accent */}
           <Reveal direction="up">
-            <div className="card p-6 sm:p-8">
+            <div className="relative overflow-hidden rounded-2xl border border-cloudy/40 bg-cream-card p-6 shadow-[var(--shadow-card)] sm:p-8">
+              {/* Clay top-accent bar — визуальный сигнал «это действие» */}
+              <div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-clay to-clay-300"
+              />
               <h3 className="mb-6 text-lg font-semibold text-ink">
                 Напиши сообщение
               </h3>

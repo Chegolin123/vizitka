@@ -5,7 +5,6 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import { profile, socials, images } from "@/lib/content";
 import { iconMap } from "@/components/ui/Icons";
 import Magnetic from "@/components/ui/Magnetic";
-import LazyThreeInitial from "@/components/three/LazyThreeInitial";
 import TiltCard from "@/components/ui/TiltCard";
 
 function containerVariants(reduce: boolean): Variants {
@@ -59,7 +58,7 @@ export default function Hero() {
           {profile.available && (
             <motion.div
               variants={iv}
-              className="mb-8 inline-flex items-center gap-2 rounded-full border border-cloudy/50 bg-cream-card/80 px-4 py-1.5 text-xs text-ink-soft shadow-[var(--shadow-card)] backdrop-blur-sm"
+              className="mb-8 inline-flex items-center gap-2 rounded-full border border-clay/30 bg-clay/5 px-4 py-1.5 text-[13px] font-medium text-ink-soft shadow-[0_0_0_4px_rgba(168,74,43,0.06)] backdrop-blur-sm"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
@@ -74,8 +73,8 @@ export default function Hero() {
               а визуально остаётся только имя с градиентом. */}
           <motion.h1
             variants={iv}
-            className="text-balance text-5xl font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl"
-            style={{ letterSpacing: "-0.03em" }}
+            className="text-balance text-6xl font-bold leading-[0.95] tracking-tight text-ink sm:text-7xl lg:text-8xl"
+            style={{ letterSpacing: "-0.04em" }}
           >
             <span className="text-gradient">{profile.name}</span>
             <span className="sr-only">
@@ -84,10 +83,10 @@ export default function Hero() {
             </span>
           </motion.h1>
 
-          {/* Роль */}
+          {/* Роль — крупная подзаголовок, не мелкая mono-строка */}
           <motion.p
             variants={iv}
-            className="mt-5 font-mono text-sm text-ink-soft sm:text-base"
+            className="mt-4 text-xl font-semibold text-ink sm:text-2xl"
           >
             {profile.role}
           </motion.p>
@@ -142,35 +141,28 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
           <TiltCard maxTilt={6} scale={1.01} className="h-full">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-cloudy/40 shadow-[0_20px_60px_-20px_rgba(20,20,19,0.3)] sm:aspect-[5/4] lg:aspect-[4/5]">
-          <Image
-            src={images.hero.src}
-            alt={images.hero.alt}
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-            // Лёгкое увеличение для «живости»
-          />
-          {/* Градиентный overlay — терракотовый снизу, для атмосферы и интеграции с фоном */}
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-clay/30 via-transparent to-transparent mix-blend-multiply"
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-br from-cream/20 via-transparent to-ink/10"
-          />
-
-          {/* 3D-инициал «А» — парит в правом верхнем углу фото.
-              Ленивая загрузка + WebGL-detect + reduced-motion fallback
-              обрабатываются внутри LazyThreeInitial. */}
-          <div
-            aria-hidden
-            className="absolute right-0 top-0 h-32 w-32 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
-          >
-            <LazyThreeInitial className="h-full w-full" />
-          </div>
+            {/* Clay glow ЗА фото — мягкое свечение, не искажает цвет кожи */}
+            <div
+              aria-hidden
+              className="absolute -inset-4 -z-10 rounded-[2rem] bg-clay/20 blur-3xl"
+            />
+            {/* Портретный слот 3/4 — классический ratio для фото человека.
+                object-top показывает лицо (центр тяжести вверху), не торс. */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-cloudy/30 shadow-[0_20px_60px_-20px_rgba(20,20,19,0.3)]">
+              <Image
+                src={images.hero.src}
+                alt={images.hero.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-top"
+              />
+              {/* Только тонкий bottom-gradient для глубины.
+                Никакого clay multiply — он уродует кожу человека. */}
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent"
+              />
             </div>
           </TiltCard>
         </motion.div>

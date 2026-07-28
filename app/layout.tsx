@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { profile, socials } from "@/lib/content";
+import DevBadge from "@/components/ui/DevBadge";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -89,6 +90,7 @@ export default function RootLayout({
         </a>
         <PersonJsonLd />
         {children}
+        <DevBadge />
         {/* Vercel Analytics — бесплатно, без cookies, приватно.
             На проде (после деплоя на Vercel) метрики видны в дашборде. */}
         <Analytics />

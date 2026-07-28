@@ -131,15 +131,15 @@ export const contact = {
  * Меняй ID фото на любое с images.unsplash.com — next/image всё оптимизирует.
  */
 export const images = {
-  // Hero-фото: справа в split-layout. Тёплая минималистичная архитектура.
+  // Hero-фото: фото Алексея в куртке (живой casual-вайб).
   hero: {
-    src: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=1600&q=80&auto=format&fit=crop",
-    alt: "Тёплая минималистичная архитектура",
+    src: "/photos/photo2-jacket.png",
+    alt: "Алексей — web full-stack разработчик",
   },
-  // Inline-фото в About: рядом с параграфами. Абстрактная архитектура.
+  // Inline-фото в About: студийный портрет (чёрное поло).
   about: {
-    src: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=80&auto=format&fit=crop",
-    alt: "Абстрактная архитектура, тёплые тона",
+    src: "/photos/photo1-polo.png",
+    alt: "Алексей, студийный портрет",
   },
   // Фоновое фото в Skills: очень приглушённое, под текстурой.
   skillsBg: {
@@ -435,6 +435,13 @@ export type Story = {
   avatarInitial: string;
   // Unsplash-фото (можно переиспользовать из projects)
   image: string;
+  // Focal point для object-position CSS (например "30% 20%").
+  // Настраивается через dev-drag маркер в карусели (см. ImageFocusEditor):
+  // двигаешь маркер → копируешь строку сюда. Если undefined → object-center.
+  imageFocus?: string;
+  // Zoom изображения (например 1.15). Настраивается колесом мыши в dev-режиме.
+  // Если undefined → 1.0 (без зума).
+  imageZoom?: number;
   // Год (мелкий шрифт)
   year: number;
   // Ссылка на репозиторий/профиль GitHub (для иконки-стрелки на карточке)
@@ -456,8 +463,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Pet-проект · React + Express + MySQL",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/karny.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/Karny`,
   },
@@ -470,8 +476,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Проект · React + Node.js + MySQL",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/tourtohell.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/tourtohell`,
   },
@@ -484,8 +489,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Проект · React 18 + Redux Toolkit + Node.js",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/arduino-kip.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/Arduino-KIP-kurs`,
   },
@@ -498,8 +502,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Проект · React + PHP + MySQL",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/fitmaster.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/Fitmaster`,
   },
@@ -512,8 +515,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Pet-проект · Python + SQLite",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/dark-moon.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/Detective_IRL_Game-tg`,
   },
@@ -526,8 +528,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Продукт · Python + FastAPI + PostgreSQL",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/leady-bot.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/leady_bot`,
   },
@@ -540,8 +541,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Продукт · Next.js + TypeScript + R3F",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/leady-landing.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/leady-landing`,
   },
@@ -554,8 +554,7 @@ export const stories: Story[] = [
     authorName: "Алексей",
     authorRole: "Pet-проект · HTML + CSS + JavaScript",
     avatarInitial: "А",
-    image:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=640&q=70&auto=format&fit=crop",
+    image: "/projects/brew-bloom.png",
     year: 2026,
     repoUrl: `${GITHUB_PROFILE}/brew-and-bloom-cafe`,
   },

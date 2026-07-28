@@ -20,11 +20,11 @@
     --duration-slow: 360ms;
     --duration-reveal: 600ms;
 
-    /* === Цвета для box-shadow (теплые, не холодные) === */
-    --shadow-clay: 0 8px 24px -8px rgba(193, 95, 60, 0.32);
-    --shadow-clay-hover: 0 14px 32px -10px rgba(193, 95, 60, 0.42);
-    --shadow-card: 0 1px 2px rgba(20, 20, 19, 0.04), 0 8px 24px -12px rgba(20, 20, 19, 0.08);
-    --shadow-card-hover: 0 2px 4px rgba(20, 20, 19, 0.05), 0 16px 40px -12px rgba(193, 95, 60, 0.18);
+    /* === Цвета для box-shadow (теплые, layered для depth) === */
+    --shadow-clay: 0 8px 24px -8px rgba(168, 74, 43, 0.32);
+    --shadow-clay-hover: 0 14px 32px -10px rgba(168, 74, 43, 0.42);
+    --shadow-card: 0 1px 2px rgba(20, 20, 19, 0.05), 0 4px 10px -4px rgba(20, 20, 19, 0.08), 0 24px 48px -24px rgba(168, 74, 43, 0.10);
+    --shadow-card-hover: 0 2px 4px rgba(20, 20, 19, 0.06), 0 8px 20px -8px rgba(20, 20, 19, 0.10), 0 32px 64px -20px rgba(168, 74, 43, 0.20);
   }
 
   html {
@@ -76,12 +76,12 @@
   }
 
   .section-title {
-    @apply text-3xl font-bold tracking-tight text-ink sm:text-4xl;
-    letter-spacing: -0.02em;
+    @apply text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl;
+    letter-spacing: -0.03em;
   }
 
   .section-eyebrow {
-    @apply mb-3 inline-block font-mono text-sm text-clay;
+    @apply mb-4 inline-flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.2em] text-clay;
   }
 
   /* Карточка: белая на cream-фоне, тёплая тень, тонкая рамка */
@@ -140,7 +140,7 @@
   @media (hover: hover) and (pointer: fine) {
     .card-hover:hover {
       @apply border-clay/30;
-      transform: translateY(-4px);
+      transform: translateY(-6px);
       box-shadow: var(--shadow-card-hover);
     }
   }

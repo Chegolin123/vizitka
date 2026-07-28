@@ -33,7 +33,7 @@ export default function ReactDemo() {
   }, []);
 
   return (
-    <div className="relative z-[70] isolate grid grid-cols-2 gap-3 text-xs">
+    <div className="relative z-[70] isolate grid w-full grid-cols-2 gap-3 text-xs">
       {/* === Code-панель === */}
       <div className="rounded-lg border border-cloudy/40 bg-ink p-3 font-mono text-[10px] leading-relaxed">
         <div className="mb-2 flex gap-1">

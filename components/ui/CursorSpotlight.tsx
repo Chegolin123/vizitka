@@ -47,7 +47,7 @@ export default function CursorSpotlight() {
       className="pointer-events-none fixed inset-0 z-30 hidden md:block"
       style={{
         background:
-          "radial-gradient(600px circle at var(--cursor-x, -100px) var(--cursor-y, -100px), rgba(193, 95, 60, 0.06), transparent 65%)",
+          "radial-gradient(500px circle at var(--cursor-x, -100px) var(--cursor-y, -100px), rgba(168, 74, 43, 0.11), transparent 65%)",
       }}
     />
   );

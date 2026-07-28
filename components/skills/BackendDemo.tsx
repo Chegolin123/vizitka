@@ -16,13 +16,13 @@ import { useReducedMotion } from "motion/react";
 type Step = "client-out" | "controller" | "service" | "db" | "service-back" | "controller-back" | "client-in";
 
 const STEPS: { id: Step; label: string; x: number }[] = [
-  { id: "client-out", label: "GET /api/user", x: 8 },
-  { id: "controller", label: "Controller", x: 28 },
-  { id: "service", label: "Service.find()", x: 50 },
-  { id: "db", label: "SELECT * FROM users", x: 72 },
-  { id: "service-back", label: "Service.map()", x: 50 },
-  { id: "controller-back", label: "res.json()", x: 28 },
-  { id: "client-in", label: "200 OK · 23ms", x: 8 },
+  { id: "client-out", label: "GET /api/user", x: 12 },
+  { id: "controller", label: "Controller", x: 37 },
+  { id: "service", label: "Service.find()", x: 62 },
+  { id: "db", label: "SELECT * FROM users", x: 88 },
+  { id: "service-back", label: "Service.map()", x: 62 },
+  { id: "controller-back", label: "res.json()", x: 37 },
+  { id: "client-in", label: "200 OK · 23ms", x: 12 },
 ];
 
 export default function BackendDemo() {
@@ -40,7 +40,7 @@ export default function BackendDemo() {
   const current = STEPS[stepIdx];
 
   return (
-    <div className="relative z-[70] isolate text-xs">
+    <div className="relative z-[70] isolate w-full text-xs">
       {/* === Схема слоёв === */}
       <div className="relative rounded-lg border border-cloudy/40 bg-cream-soft p-3">
         <div className="mb-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-ink-muted">
@@ -53,12 +53,13 @@ export default function BackendDemo() {
           {/* Фоновая линия */}
           <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-cloudy/40" />
 
-          {/* Слои (Client / Controller / Service / DB) */}
+          {/* Слои (Client / Controller / Service / DB).
+              Короткие labels — не выходят за края на узких карточках. */}
           {[
-            { x: 8, label: "Client" },
-            { x: 28, label: "Controller" },
-            { x: 50, label: "Service" },
-            { x: 72, label: "DB" },
+            { x: 12, label: "Client" },
+            { x: 37, label: "Ctrl" },
+            { x: 62, label: "Svc" },
+            { x: 88, label: "DB" },
           ].map((node) => (
             <div
               key={node.label}

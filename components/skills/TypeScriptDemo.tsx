@@ -36,7 +36,7 @@ export default function TypeScriptDemo() {
   const isError = phase === "bad";
 
   return (
-    <div className="relative z-[70] isolate text-xs">
+    <div className="relative z-[70] isolate w-full text-xs">
       {/* Заголовок окна с tsc */}
       <div className="flex items-center justify-between rounded-t-lg border border-cloudy/40 border-b-0 bg-ink px-3 py-1.5">
         <div className="flex items-center gap-1.5">
